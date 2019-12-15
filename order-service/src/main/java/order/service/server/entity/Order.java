@@ -1,33 +1,48 @@
 package order.service.server.entity;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Document(collection = "order")
-public class Order implements Serializable {
+public class Order extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    private String id;
-    private Client client;
+    private String type;
+    private String brand;
+    private String problem;
+    private String preview;
+    private Customer customer;
     private User user;
-    private Equipment equipment;
     private Status status;
     private Float price;
 
-    public enum Status { DONE, IN_PROGRESS, NEW }
+    public enum Status {DONE, IN_PROGRESS}
 
     public Order() {
     }
 
-    public Order(String id, Client client, User user, Equipment equipment, Status status, Float price) {
-        this.id = id;
-        this.client = client;
+    public Order(String type, String brand, String problem, String preview, Customer customer, User user, Status status, Float price) {
+
+        this.type = type;
+        this.brand = brand;
+        this.problem = problem;
+        this.preview = preview;
+        this.customer = customer;
         this.user = user;
-        this.equipment = equipment;
+        this.status = status;
+        this.price = price;
+    }
+
+    public Order(String id, String type, String brand, String problem, String preview, Customer customer, User user, Status status, Float price) {
+        super(id);
+        this.type = type;
+        this.brand = brand;
+        this.problem = problem;
+        this.preview = preview;
+        this.customer = customer;
+        this.user = user;
         this.status = status;
         this.price = price;
     }
@@ -36,20 +51,44 @@ public class Order implements Serializable {
         return serialVersionUID;
     }
 
-    public String getId() {
-        return id;
+    public String getType() {
+        return type;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public Client getClient() {
-        return client;
+    public String getBrand() {
+        return brand;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getProblem() {
+        return problem;
+    }
+
+    public void setProblem(String problem) {
+        this.problem = problem;
+    }
+
+    public String getPreview() {
+        return preview;
+    }
+
+    public void setPreview(String preview) {
+        this.preview = preview;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public User getUser() {
@@ -58,14 +97,6 @@ public class Order implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Equipment getEquipment() {
-        return equipment;
-    }
-
-    public void setEquipment(Equipment equipment) {
-        this.equipment = equipment;
     }
 
     public Status getStatus() {
@@ -89,15 +120,19 @@ public class Order implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(id, order.id) &&
-                Objects.equals(client, order.client) &&
-                Objects.equals(user, order.user) &&
-                Objects.equals(equipment, order.equipment) &&
-                status == order.status;
+        return
+                Objects.equals(type, order.type) &&
+                        Objects.equals(brand, order.brand) &&
+                        Objects.equals(problem, order.problem) &&
+                        Objects.equals(preview, order.preview) &&
+                        Objects.equals(customer, order.customer) &&
+                        Objects.equals(user, order.user) &&
+                        status == order.status &&
+                        Objects.equals(price, order.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, client, user, equipment, status);
+        return Objects.hash(type, brand, problem, preview, customer, user, status, price);
     }
 }

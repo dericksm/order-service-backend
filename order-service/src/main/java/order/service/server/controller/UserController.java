@@ -1,54 +1,34 @@
 package order.service.server.controller;
 
 import order.service.server.entity.User;
-import order.service.server.service.UserServiceNormal;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import order.service.server.service.AbstractService;
+import order.service.server.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.util.List;
+import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value="/users")
-public class UserController {
+@RequestMapping("/users")
+public class UserController extends AbstractController<User> {
 
-    @Autowired
-    private UserServiceNormal userServiceNormal;
+    private UserService userServiceAb;
 
-    @GetMapping
-    public ResponseEntity<List<User>> findAll() {
-        List<User> list = userServiceNormal.findAll();
-        return ResponseEntity.ok().body(list);
+    public UserController(AbstractService<User> service, UserService userServiceAb) {
+        super(service);
+        this.userServiceAb = userServiceAb;
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<User> findById(@PathVariable String id) {
-        User user = userServiceNormal.findById(id);
-        return ResponseEntity.ok().body(user);
+    @PostMapping("/login")
+    public boolean login(@RequestBody User user) throws Exception {
+        User find = userServiceAb.findByEmail(user);
+        if(find.getPassword().equals(user.getPassword())){
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    @PostMapping
-    public ResponseEntity<Void> create(@RequestBody User user) {
-        User newUser = userServiceNormal.create(user);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newUser.getId()).toUri();
-        return ResponseEntity.created(uri).build();
-    }
-
-    @DeleteMapping(value="/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
-        userServiceNormal.delete(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping(value="/{id}")
-    public ResponseEntity<Void> update(@RequestBody User user, @PathVariable String id) {
-        User updUser = user;
-        updUser.setId(id);
-        userServiceNormal.update(updUser);
-        return ResponseEntity.noContent().build();
-    }
 
 
 }

@@ -7,22 +7,33 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Document(collection = "equipment")
-public class Equipment implements Serializable {
+public class Equipment extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    private String id;
     private String name;
     private String type;
     private String brand;
     private String problem;
     private String preview;
+    private Customer customer;
+    private User user;
+    private Order.Status status;
+    private Float price;
+    public enum Status { DONE, IN_PROGRESS, NEW }
 
     public Equipment() {
     }
 
+    public Equipment(String name, String type, String brand, String problem, String preview) {
+        this.name = name;
+        this.type = type;
+        this.brand = brand;
+        this.problem = problem;
+        this.preview = preview;
+    }
+
     public Equipment(String id, String name, String type, String brand, String problem, String preview) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.type = type;
         this.brand = brand;
@@ -32,14 +43,6 @@ public class Equipment implements Serializable {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -87,8 +90,7 @@ public class Equipment implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Equipment equipment = (Equipment) o;
-        return Objects.equals(id, equipment.id) &&
-                Objects.equals(name, equipment.name) &&
+        return Objects.equals(name, equipment.name) &&
                 Objects.equals(type, equipment.type) &&
                 Objects.equals(brand, equipment.brand) &&
                 Objects.equals(problem, equipment.problem) &&
@@ -97,6 +99,6 @@ public class Equipment implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, type, brand, problem, preview);
+        return Objects.hash(name, type, brand, problem, preview);
     }
 }

@@ -4,13 +4,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-@Document(collection = "client")
-public class Client implements Serializable {
+@Document(collection = "customer")
+public class Customer extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    private String id;
     private String name;
     private String email;
     private String street;
@@ -18,11 +17,20 @@ public class Client implements Serializable {
     private String district;
     private String phone;
 
-    public Client() {
+    public Customer() {
     }
 
-    public Client(String id, String name, String email, String street, Integer number, String district, String phone) {
-        this.id = id;
+    public Customer(String name, String email, String street, Integer number, String district, String phone) {
+        this.name = name;
+        this.email = email;
+        this.street = street;
+        this.number = number;
+        this.district = district;
+        this.phone = phone;
+    }
+
+    public Customer(String id, String name, String email, String street, Integer number, String district, String phone) {
+        super(id);
         this.name = name;
         this.email = email;
         this.street = street;
@@ -33,14 +41,6 @@ public class Client implements Serializable {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -92,12 +92,20 @@ public class Client implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(name, customer.name) &&
+                Objects.equals(email, customer.email) &&
+                Objects.equals(street, customer.street) &&
+                Objects.equals(number, customer.number) &&
+                Objects.equals(district, customer.district) &&
+                Objects.equals(phone, customer.phone);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public int hashCode() {
+        return Objects.hash(name, email, street, number, district, phone);
     }
 }

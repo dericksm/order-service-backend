@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public abstract class AbstractController<T extends AbstractEntity> {
@@ -40,10 +41,9 @@ public abstract class AbstractController<T extends AbstractEntity> {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping(value="/{id}")
-    public ResponseEntity<Void> update(@RequestBody T t, @PathVariable String id) {
-        T entity = t;
-        service.update(entity);
+    @PutMapping
+    public ResponseEntity<Void> update(@RequestBody T t) {
+        service.update(t);
         return ResponseEntity.noContent().build();
     }
 
