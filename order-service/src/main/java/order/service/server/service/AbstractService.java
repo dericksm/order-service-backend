@@ -26,7 +26,9 @@ public abstract class AbstractService<T extends AbstractEntity>{
         return entity.orElseThrow(() -> new NotFoundException("Entity not found"));
     }
 
-    public T create(T entity) { return repository.insert(entity);}
+    public T create(T entity) {
+        return repository.insert(entity);
+    }
 
     public void delete(String id){
         findById(id);

@@ -14,7 +14,6 @@ public class Order extends AbstractEntity implements Serializable {
     private String problem;
     private String preview;
     private Customer customer;
-    private User user;
     private Status status;
     private Float price;
 
@@ -23,26 +22,24 @@ public class Order extends AbstractEntity implements Serializable {
     public Order() {
     }
 
-    public Order(String type, String brand, String problem, String preview, Customer customer, User user, Status status, Float price) {
+    public Order(String type, String brand, String problem, String preview, Customer customer, Status status, Float price) {
 
         this.type = type;
         this.brand = brand;
         this.problem = problem;
         this.preview = preview;
         this.customer = customer;
-        this.user = user;
         this.status = status;
         this.price = price;
     }
 
-    public Order(String id, String type, String brand, String problem, String preview, Customer customer, User user, Status status, Float price) {
+    public Order(String id, String type, String brand, String problem, String preview, Customer customer, Status status, Float price) {
         super(id);
         this.type = type;
         this.brand = brand;
         this.problem = problem;
         this.preview = preview;
         this.customer = customer;
-        this.user = user;
         this.status = status;
         this.price = price;
     }
@@ -91,14 +88,6 @@ public class Order extends AbstractEntity implements Serializable {
         this.customer = customer;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Status getStatus() {
         return status;
     }
@@ -126,13 +115,12 @@ public class Order extends AbstractEntity implements Serializable {
                         Objects.equals(problem, order.problem) &&
                         Objects.equals(preview, order.preview) &&
                         Objects.equals(customer, order.customer) &&
-                        Objects.equals(user, order.user) &&
                         status == order.status &&
                         Objects.equals(price, order.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, brand, problem, preview, customer, user, status, price);
+        return Objects.hash(type, brand, problem, preview, customer, status, price);
     }
 }

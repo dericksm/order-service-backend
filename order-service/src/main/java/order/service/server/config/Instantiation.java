@@ -1,5 +1,7 @@
 package order.service.server.config;
+
 import order.service.server.entity.User;
+import order.service.server.repository.OrderRepository;
 import order.service.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +15,13 @@ public class Instantiation implements CommandLineRunner {
 
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private OrderRepository orderRepositoryrepository;
 
     @Override
     public void run(String... args) throws Exception {
 
-//        repository.deleteAll();
+        repository.deleteAll();
+        orderRepositoryrepository.deleteAll();
     }
 }
